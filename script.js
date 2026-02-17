@@ -1,0 +1,67 @@
+let userScore = 0;
+let compScore = 0;
+
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#msg");
+
+const userScorePara = document.querySelector("#user-score");
+const compScorePara = document.querySelector("#comp-score");
+
+
+const genCompChoice = () => {
+let options = ["rock","paper","scissors"];
+const randIdx = Math.floor(Math.random() * 3);
+return options[randIdx];
+};
+
+const drawGame = () => {
+    msg.style.backgroundColor = "#303841";
+        msg.innerText = "the game was draw. Play again.";
+
+};
+
+const showWinner = (userWin,userChoice,compChoice) => {
+if (userWin) {
+ msg.style.backgroundColor = "green";
+ userScore++;
+     userScorePara.innerText = userScore;
+    msg.innerText = `you Win Your ${userChoice} beats Your ${compChoice}`;
+} else {
+msg.style.backgroundColor = "red";
+compScore++;
+compScorePara.innerText = compScore;
+               msg.innerText = `You lost. ${compChoice} beats your ${userChoice}`;
+
+}
+};
+
+const playGame = (userChoice) => {
+// generate the computer choice
+ const compChoice = genCompChoice();
+
+ if (userChoice === compChoice){
+    //Draw Game
+drawGame();
+ } else {
+    let userWin = true;
+    if (userChoice === "rock"){
+        // scissors,paper
+        userWin = compChoice === "paper" ? false : true;
+    } else if (userChoice === "paper"){
+        //rok,scissors
+      userWin = compChoice === "scissors" ? false : true;
+    } else {
+   //rock,pepar
+   userWin = compChoice === "rock" ? false : true;
+}
+showWinner(userWin,userChoice,compChoice);
+}
+};
+
+choices.forEach((choice) => {
+    choice.addEventListener("click",() => {
+        const userChoice = choice.getAttribute("id");
+   playGame(userChoice);
+
+    })
+});
